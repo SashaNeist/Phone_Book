@@ -6,7 +6,7 @@
 
 int Contact::nextId = 1;
 
-Contact::Contact() : id(nextId++) {}
+Contact::Contact() : id(nextId++), firstName(""), lastName(""), middleName(""), address(""), email(""), phoneNumbers({}) {}
 Contact::Contact(const QString& firstName, const QString& lastName, const QList<QString>& phoneNumbers)
     : id(nextId++),
     firstName(firstName),
@@ -27,7 +27,7 @@ Contact::Contact(const QString& firstName, const QString& lastName, const QStrin
     email(email), 
     phoneNumbers(phoneNumbers) {}
 Contact::Contact(const Contact& other)
-    : id(nextId++),
+    : id(other.id),
     firstName(other.firstName),
     lastName(other.lastName),
     middleName(other.middleName),
@@ -140,16 +140,22 @@ bool Contact::isValid() const {
         validateEmail(email) && validateBirthDate(birthDate);
 }
 bool Contact::validateName(const QString& name) const {
-    QRegularExpression regex("^[А-ЯЁа-яёA-Za-z]+([А-ЯЁа-яёA-Za-z\\s\\d-]*[А-ЯЁа-яёA-Za-z\\d]+)?$");
-    return regex.match(name).hasMatch();
+    if (!name.isEmpty()) {
+        QRegularExpression regex(QString(R"(^[A-Za-zА-Яа-я\s]+$)"));
+        return regex.match(name).hasMatch();
+    }
+    else return true;
 }
 bool Contact::validatePhoneNumber(const QString& phoneNumber) const {
     QRegularExpression regex("^(?:\\+7|8)?[\\s(]?(\\d{3})[\\s)]?(\\d{3})[\\s-]?(\\d{2})[\\s-]?(\\d{2})$");
     return regex.match(phoneNumber).hasMatch();
 }
 bool Contact::validateEmail(const QString& email) const {
-    QRegularExpression regex("^[a-zA-Z0-9]+@[a-zA-Z0-9]+\\.[a-zA-Z0-9]+$");
-    return regex.match(email.trimmed()).hasMatch();
+    if (!email.isEmpty()) {
+        QRegularExpression regex(R"(^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$)");
+        return regex.match(email).hasMatch();
+    }
+    else return true;
 }
 bool Contact::validateBirthDate(const QDate& birthDate) const {
     return birthDate < QDate::currentDate();
@@ -201,19 +207,21 @@ Contact& Contact::operator=(Contact&& other) noexcept {
     return *this;
 }
 
-// write in file
-void Contact::serialize(QDataStream& stream) const
-{
+// Write in file
+void Contact::serialize(QDataStream& stream) const {
     stream << id;
     stream << firstName;
     stream << lastName;
     stream << middleName;
     stream << address;
-    stream << birthDate;
+    stream << birthDate.year() << birthDate.month() << birthDate.day();//Сериализация QDate
     stream << email;
-    stream << phoneNumbers;
+    stream << phoneNumbers.size();
+    for (const QString& phoneNumber : phoneNumbers) {
+        stream << phoneNumber;
+    }
 }
-// write from file
+// Write from file
 void Contact::deserialize(QDataStream& stream)
 {
     stream >> id;
@@ -221,9 +229,18 @@ void Contact::deserialize(QDataStream& stream)
     stream >> lastName;
     stream >> middleName;
     stream >> address;
-    stream >> birthDate;
+    int year, month, day;
+    stream >> year >> month >> day; // Десериализация QDate
+    birthDate.setDate(year, month, day);
     stream >> email;
-    stream >> phoneNumbers;
-}
 
+    int phoneNumbersSize;
+    stream >> phoneNumbersSize;
+    phoneNumbers.clear();
+    for (int i = 0; i < phoneNumbersSize; ++i) {
+        QString phoneNumber;
+        stream >> phoneNumber;
+        phoneNumbers.append(phoneNumber);
+    }
+}
 

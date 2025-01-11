@@ -1,5 +1,10 @@
 ﻿   Qt/MSBuild: 3.3.1.1
   Reading Qt configuration (C:/Qt/Qt5.12.12/5.12.12/msvc2017_64/bin/qmake)
    Qt: 5.12.12
+  Book.cpp
+  ContactDialog.cpp
+  MainWindow.cpp
   main.cpp
-  Phone_Book.vcxproj -> D:\Учеба\2024-2025\прога\Курсовое проектирование\Phone_Book\x64\Debug\Phone_Book.exe
+  moc_ContactDialog.cpp
+  moc_MainWindow.cpp
+  Phone_Book.vcxproj -> D:\Учеба\2024-2025\прога\Курсовая\Phone_Book\x64\Debug\Phone_Book.exe

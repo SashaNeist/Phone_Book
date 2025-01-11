@@ -3,77 +3,86 @@
 #include <QRegularExpression>
 
 // Constructors
-PhoneBook::PhoneBook(StorageProvider * storage) : storage(storage)
-{
-    loadContacts();
-}
-PhoneBook::PhoneBook() : storage(nullptr) {}
-
+PhoneBook::PhoneBook() = default;
 PhoneBook::~PhoneBook()
 {
     if (storage) {
         delete storage;
     }
 }
+void PhoneBook::setStorage(StorageProvider* storage)
+{
+    this->storage = storage;
+    loadContacts();
+}
 
 // Change contacts
-void PhoneBook::addContact(const Contact& contact) {
+bool PhoneBook::addContact(const Contact& contact) {
+    if (!contact.isValid()) return false;
     contacts.append(contact);
+    return true;
 }
-void PhoneBook::removeContact(int id) {
+bool PhoneBook::removeContact(int id) {
     for (int i = 0; i < contacts.size(); ++i) {
         if (contacts[i].getId() == id) {
             contacts.removeAt(i);
             // Find id and delete
-            return;
+            return true;
         }
     }
     qWarning() << "Contact with id = " << id << " not found";
+    return false;
 }
-void PhoneBook::updateContact(int id, const Contact& contact) {
+bool PhoneBook::updateContact(int id, const Contact& contact) {
     for (int i = 0; i < contacts.size(); ++i) {
         if (contacts[i].getId() == id) {
             contacts[i] = contact;
-            return;
+            return true;
         }
     }
     qWarning() << "Contact with id = " << id << " not found";
+    return false;
 }
 
 // Find|Sort contacts
 QList<Contact> PhoneBook::findContacts(const QString& query, const QList<QString>& fields) {
-    QList<Contact> results;
-    if (query.isEmpty() || fields.isEmpty()) {
-        return contacts;
-    }
-    for (const auto& contact : contacts) {
-        for (const auto& field : fields) {
-            if (field == "firstName" && contact.getFirstName().contains(query, Qt::CaseInsensitive)) {
-                results.append(contact);
-                break;
-            }
-            else if (field == "lastName" && contact.getLastName().contains(query, Qt::CaseInsensitive)) {
-                results.append(contact);
-                break;
-            }
-            else if (field == "middleName" && contact.getMiddleName().contains(query, Qt::CaseInsensitive)) {
-                results.append(contact);
-                break;
-            }
-            else if (field == "address" && contact.getAddress().contains(query, Qt::CaseInsensitive)) {
-                results.append(contact);
-                break;
-            }
-            else if (field == "email" && contact.getEmail().contains(query, Qt::CaseInsensitive)) {
-                results.append(contact);
-                break;
-            }
+        QList<Contact> results;
+        if (query.isEmpty() || fields.isEmpty()) {
+            return contacts;
         }
+        for (const auto& contact : contacts) {
+             bool contactFound = false;
+             for (const auto& field : fields) {
+                if (field == "firstName" && contact.getFirstName().contains(query, Qt::CaseInsensitive)) {
+                   contactFound = true;
+                    break;
+                }
+               else if (field == "lastName" && contact.getLastName().contains(query, Qt::CaseInsensitive)) {
+                    contactFound = true;
+                    break;
+                }
+               else if (field == "middleName" && contact.getMiddleName().contains(query, Qt::CaseInsensitive)) {
+                    contactFound = true;
+                    break;
+                }
+                else if (field == "address" && contact.getAddress().contains(query, Qt::CaseInsensitive)) {
+                    contactFound = true;
+                    break;
+               }
+               else if (field == "email" && contact.getEmail().contains(query, Qt::CaseInsensitive)) {
+                    contactFound = true;
+                    break;
+               }
+         }
+            if (contactFound) {
+                results.append(contact);
+           }
+        }
+        return results;
     }
-    return results;
-}
 QList<Contact> PhoneBook::sortContacts(const QString& field, Qt::SortOrder order) {
-    std::sort(contacts.begin(), contacts.end(), [field, order](const Contact& a, const Contact& b) {
+    if (contacts.empty()) return contacts;
+    std::sort(contacts.begin(), contacts.end(), [&](const Contact& a, const Contact& b) {
         bool result = false;
         if (field == "firstName") {
             result = a.getFirstName() < b.getFirstName();
@@ -87,13 +96,19 @@ QList<Contact> PhoneBook::sortContacts(const QString& field, Qt::SortOrder order
         else if (field == "address") {
             result = a.getAddress() < b.getAddress();
         }
-        else if (field == "birthDate") {
+        else if (field == "birthDate")
+        {
             result = a.getBirthDate() < b.getBirthDate();
         }
-        else if (field == "email") {
+        else if (field == "email")
+        {
             result = a.getEmail() < b.getEmail();
         }
-        return (order == Qt::AscendingOrder) ? result : !result;
+        if (order == Qt::DescendingOrder)
+        {
+            result = !result;
+        }
+        return result;
         });
     return contacts;
 }
@@ -101,7 +116,16 @@ QList<Contact> PhoneBook::sortContacts(const QString& field, Qt::SortOrder order
 // Load|Save contacts
 void PhoneBook::loadContacts() {
     if (storage) {
-        contacts = storage->loadContacts();
+        try
+        {
+            QList<Contact> loadedContacts = storage->loadContacts();
+            if (!loadedContacts.isEmpty()) {
+                contacts = loadedContacts;
+            }
+        }
+        catch (const std::exception& ex) {
+            qWarning() << "Storage is invalid" << ex.what();
+        }
     }
     else {
         qWarning() << "Storage is not set";
@@ -109,7 +133,15 @@ void PhoneBook::loadContacts() {
 }
 void PhoneBook::saveContacts() {
     if (storage) {
-        storage->saveContacts(contacts);
+        try {
+            storage->saveContacts(contacts);
+        }
+        catch (const std::ios_base::failure& ex) {
+            qWarning() << "I/O Error during save: " << ex.what();
+        }
+        catch (const std::exception& ex) {
+            qWarning() << "Generic exception during save: " << ex.what();
+        }
     }
     else {
         qWarning() << "Storage is not set";
@@ -117,49 +149,10 @@ void PhoneBook::saveContacts() {
 }
 
 //Getter
-QList<Contact> PhoneBook::getContacts() {
+QList<Contact>& PhoneBook::getContacts() {
     return contacts;
 }
 
 
-// Save data in memory
-MemoryStorage::MemoryStorage() {}
-QList<Contact> MemoryStorage::loadContacts() {
-    return contacts;
-}
-void MemoryStorage::saveContacts(const QList<Contact>& contacts) {
-    this->contacts = contacts;
-}
-
-// Save data in file
-FileStorage::FileStorage(const QString& fileName) : fileName(fileName) {}
-QList<Contact> FileStorage::loadContacts() {
-    QList<Contact> contacts;
-    QFile file(fileName);
-    if (!file.open(QIODevice::ReadOnly)) {
-        qWarning() << "Could not open file for reading: " << fileName;
-        return contacts;
-    }
-    QDataStream stream(&file);
-    while (!stream.atEnd()) {
-        Contact contact;
-        contact.deserialize(stream);
-        contacts.append(contact);
-    }
-    file.close();
-    return contacts;
-}
-void FileStorage::saveContacts(const QList<Contact>& contacts) {
-    QFile file(fileName);
-    if (!file.open(QIODevice::WriteOnly)) {
-        qWarning() << "Could not open file for writing: " << fileName;
-        return;
-    }
-    QDataStream stream(&file);
-    for (const auto& contact : contacts) {
-        contact.serialize(stream);
-    }
-    file.close();
-}
 
 

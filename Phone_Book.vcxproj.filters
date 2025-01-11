@@ -21,29 +21,84 @@
       <UniqueIdentifier>{639EADAA-A684-42e4-A9AD-28FC9BCB8F7C}</UniqueIdentifier>
       <Extensions>ts</Extensions>
     </Filter>
+    <Filter Include="Header Files\Sevrices">
+      <UniqueIdentifier>{4003e8ff-d63e-4dcd-8367-3c87775bb394}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Services">
+      <UniqueIdentifier>{dcc2f866-7ad3-4abd-9c83-ac22768d4211}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\qtVision">
+      <UniqueIdentifier>{54bcec2c-01ba-4e2a-927e-c2144ee01469}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\DataBase">
+      <UniqueIdentifier>{8e3e2868-fca7-4a70-bc58-9be55a1095aa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\DataBase">
+      <UniqueIdentifier>{7b0d021d-fb47-4003-a91b-0c9507953a57}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\QtVision">
+      <UniqueIdentifier>{4b057af1-859c-4f7d-b44b-df1130866e56}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Form Files\ui">
+      <UniqueIdentifier>{fa7e3d5d-fcfd-4bf2-88fc-54fa16f23a90}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Contact.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Book.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Contact.cpp">
+      <Filter>Source Files\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Storage.cpp">
+      <Filter>Source Files\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="MainWindow.cpp">
+      <Filter>Source Files\qtVision</Filter>
+    </ClCompile>
+    <ClCompile Include="DataBase.cpp">
+      <Filter>Source Files\DataBase</Filter>
+    </ClCompile>
+    <ClCompile Include="ContactDialog.cpp">
+      <Filter>Source Files\qtVision</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Contact.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Book.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Sevrices</Filter>
+    </ClInclude>
+    <ClInclude Include="Contact.h">
+      <Filter>Header Files\Sevrices</Filter>
+    </ClInclude>
+    <ClInclude Include="Storage.h">
+      <Filter>Header Files\Sevrices</Filter>
+    </ClInclude>
+    <ClInclude Include="DataBase.h">
+      <Filter>Header Files\DataBase</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include=".gitignore">
       <Filter>Form Files</Filter>
     </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="MainWindow.h">
+      <Filter>Header Files\QtVision</Filter>
+    </QtMoc>
+    <QtMoc Include="ContactDialog.h">
+      <Filter>Header Files\QtVision</Filter>
+    </QtMoc>
+  </ItemGroup>
+  <ItemGroup>
+    <QtUic Include="mainwindow.ui">
+      <Filter>Form Files\ui</Filter>
+    </QtUic>
+    <QtUic Include="contactdialog.ui">
+      <Filter>Form Files\ui</Filter>
+    </QtUic>
   </ItemGroup>
 </Project>

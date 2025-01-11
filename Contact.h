@@ -3,7 +3,12 @@
 #include <QString>
 #include <QList>
 #include <QDate>
-
+#include <QFile>
+#include <QIODevice>
+#include <QDebug>
+#include <QtSql>
+#include <regex>
+// Contact class
 class Contact {
 private:
     static int nextId;

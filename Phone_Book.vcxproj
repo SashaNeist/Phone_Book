@@ -94,11 +94,21 @@
   <ItemGroup>
     <ClCompile Include="Book.cpp" />
     <ClCompile Include="Contact.cpp" />
+    <ClCompile Include="ContactDialog.cpp" />
+    <ClCompile Include="DataBase.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MainWindow.cpp" />
+    <QtUic Include="mainwindow.ui" />
+    <QtMoc Include="MainWindow.h" />
+    <ClCompile Include="Storage.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Book.h" />
     <ClInclude Include="Contact.h" />
+    <QtMoc Include="ContactDialog.h" />
+    <ClInclude Include="DataBase.h" />
+    <ClInclude Include="Storage.h" />
+    <QtUic Include="contactdialog.ui" />
   </ItemGroup>
   <ItemGroup>
     <Text Include=".gitignore" />
