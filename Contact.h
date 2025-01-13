@@ -48,6 +48,7 @@ public:
     QList<QString> getPhoneNumbers() const;
 
     // Setters
+    void setId(const int& id);
     void setFirstName(const QString& firstName);
     void setLastName(const QString& lastName);
     void setMiddleName(const QString& middleName);

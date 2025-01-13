@@ -79,6 +79,9 @@
     <ClInclude Include="DataBase.h">
       <Filter>Header Files\DataBase</Filter>
     </ClInclude>
+    <ClInclude Include="SQLite\sqlite3.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include=".gitignore">

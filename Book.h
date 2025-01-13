@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Storage.h"
+#include "DataBase.h"
 
 class PhoneBook {
 private:
@@ -14,7 +14,7 @@ public:
     bool removeContact(int id);
     bool updateContact(int id, const Contact& contact);
     QList<Contact> findContacts(const QString& query, const QList<QString>& fields);
-    QList<Contact> sortContacts(const QString& field, Qt::SortOrder order);
+    QList<Contact> sortContacts(const QList<std::pair<QString, Qt::SortOrder>>& sortFields);
     void loadContacts();
     void saveContacts();
     QList<Contact>& getContacts();

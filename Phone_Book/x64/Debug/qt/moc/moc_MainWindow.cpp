@@ -9,6 +9,7 @@
 #include "../../../../../MainWindow.h"
 #include <QtCore/qbytearray.h>
 #include <QtCore/qmetatype.h>
+#include <QtCore/QList>
 #if !defined(Q_MOC_OUTPUT_REVISION)
 #error "The header file 'MainWindow.h' doesn't include <QObject>."
 #elif Q_MOC_OUTPUT_REVISION != 67
@@ -21,8 +22,8 @@ QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_MainWindow_t {
-    QByteArrayData data[10];
-    char stringdata0[146];
+    QByteArrayData data[18];
+    char stringdata0[234];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -35,18 +36,29 @@ QT_MOC_LITERAL(0, 0, 10), // "MainWindow"
 QT_MOC_LITERAL(1, 11, 12), // "onAddContact"
 QT_MOC_LITERAL(2, 24, 0), // ""
 QT_MOC_LITERAL(3, 25, 13), // "onEditContact"
-QT_MOC_LITERAL(4, 39, 15), // "onRemoveContact"
-QT_MOC_LITERAL(5, 55, 15), // "onSearchContact"
-QT_MOC_LITERAL(6, 71, 14), // "onSortContacts"
-QT_MOC_LITERAL(7, 86, 11), // "updateTable"
-QT_MOC_LITERAL(8, 98, 23), // "on_actionSave_triggered"
-QT_MOC_LITERAL(9, 122, 23) // "on_actionLoad_triggered"
+QT_MOC_LITERAL(4, 39, 19), // "onCellDoubleClicked"
+QT_MOC_LITERAL(5, 59, 3), // "row"
+QT_MOC_LITERAL(6, 63, 6), // "column"
+QT_MOC_LITERAL(7, 70, 9), // "editField"
+QT_MOC_LITERAL(8, 80, 8), // "QString&"
+QT_MOC_LITERAL(9, 89, 5), // "field"
+QT_MOC_LITERAL(10, 95, 15), // "editPhoneNumber"
+QT_MOC_LITERAL(11, 111, 15), // "QList<QString>&"
+QT_MOC_LITERAL(12, 127, 15), // "onRemoveContact"
+QT_MOC_LITERAL(13, 143, 15), // "onSearchContact"
+QT_MOC_LITERAL(14, 159, 14), // "onSortContacts"
+QT_MOC_LITERAL(15, 174, 11), // "updateTable"
+QT_MOC_LITERAL(16, 186, 23), // "on_actionSave_triggered"
+QT_MOC_LITERAL(17, 210, 23) // "on_actionLoad_triggered"
 
     },
     "MainWindow\0onAddContact\0\0onEditContact\0"
-    "onRemoveContact\0onSearchContact\0"
-    "onSortContacts\0updateTable\0"
-    "on_actionSave_triggered\0on_actionLoad_triggered"
+    "onCellDoubleClicked\0row\0column\0editField\0"
+    "QString&\0field\0editPhoneNumber\0"
+    "QList<QString>&\0onRemoveContact\0"
+    "onSearchContact\0onSortContacts\0"
+    "updateTable\0on_actionSave_triggered\0"
+    "on_actionLoad_triggered"
 };
 #undef QT_MOC_LITERAL
 
@@ -56,7 +68,7 @@ static const uint qt_meta_data_MainWindow[] = {
        8,       // revision
        0,       // classname
        0,    0, // classinfo
-       8,   14, // methods
+      11,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -64,18 +76,24 @@ static const uint qt_meta_data_MainWindow[] = {
        0,       // signalCount
 
  // slots: name, argc, parameters, tag, flags
-       1,    0,   54,    2, 0x08 /* Private */,
-       3,    0,   55,    2, 0x08 /* Private */,
-       4,    0,   56,    2, 0x08 /* Private */,
-       5,    0,   57,    2, 0x08 /* Private */,
-       6,    0,   58,    2, 0x08 /* Private */,
-       7,    0,   59,    2, 0x08 /* Private */,
-       8,    0,   60,    2, 0x08 /* Private */,
-       9,    0,   61,    2, 0x08 /* Private */,
+       1,    0,   69,    2, 0x08 /* Private */,
+       3,    0,   70,    2, 0x08 /* Private */,
+       4,    2,   71,    2, 0x08 /* Private */,
+       7,    1,   76,    2, 0x08 /* Private */,
+      10,    1,   79,    2, 0x08 /* Private */,
+      12,    0,   82,    2, 0x08 /* Private */,
+      13,    0,   83,    2, 0x08 /* Private */,
+      14,    0,   84,    2, 0x08 /* Private */,
+      15,    0,   85,    2, 0x08 /* Private */,
+      16,    0,   86,    2, 0x08 /* Private */,
+      17,    0,   87,    2, 0x08 /* Private */,
 
  // slots: parameters
     QMetaType::Void,
     QMetaType::Void,
+    QMetaType::Void, QMetaType::Int, QMetaType::Int,    5,    6,
+    QMetaType::Void, 0x80000000 | 8,    9,
+    QMetaType::Void, 0x80000000 | 11,    9,
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
@@ -94,16 +112,18 @@ void MainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         switch (_id) {
         case 0: _t->onAddContact(); break;
         case 1: _t->onEditContact(); break;
-        case 2: _t->onRemoveContact(); break;
-        case 3: _t->onSearchContact(); break;
-        case 4: _t->onSortContacts(); break;
-        case 5: _t->updateTable(); break;
-        case 6: _t->on_actionSave_triggered(); break;
-        case 7: _t->on_actionLoad_triggered(); break;
+        case 2: _t->onCellDoubleClicked((*reinterpret_cast< int(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2]))); break;
+        case 3: _t->editField((*reinterpret_cast< QString(*)>(_a[1]))); break;
+        case 4: _t->editPhoneNumber((*reinterpret_cast< QList<QString>(*)>(_a[1]))); break;
+        case 5: _t->onRemoveContact(); break;
+        case 6: _t->onSearchContact(); break;
+        case 7: _t->onSortContacts(); break;
+        case 8: _t->updateTable(); break;
+        case 9: _t->on_actionSave_triggered(); break;
+        case 10: _t->on_actionLoad_triggered(); break;
         default: ;
         }
     }
-    Q_UNUSED(_a);
 }
 
 QT_INIT_METAOBJECT const QMetaObject MainWindow::staticMetaObject = { {
@@ -135,13 +155,13 @@ int MainWindow::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 8)
+        if (_id < 11)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 8;
+        _id -= 11;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 8)
+        if (_id < 11)
             *reinterpret_cast<int*>(_a[0]) = -1;
-        _id -= 8;
+        _id -= 11;
     }
     return _id;
 }

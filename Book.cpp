@@ -80,35 +80,47 @@ QList<Contact> PhoneBook::findContacts(const QString& query, const QList<QString
         }
         return results;
     }
-QList<Contact> PhoneBook::sortContacts(const QString& field, Qt::SortOrder order) {
+QList<Contact> PhoneBook::sortContacts(const QList<std::pair<QString, Qt::SortOrder>>& sortFields)
+{
     if (contacts.empty()) return contacts;
+
     std::sort(contacts.begin(), contacts.end(), [&](const Contact& a, const Contact& b) {
-        bool result = false;
-        if (field == "firstName") {
-            result = a.getFirstName() < b.getFirstName();
+        for (const auto& sortField : sortFields) {
+            QString field = sortField.first;
+            Qt::SortOrder order = sortField.second;
+            bool result = false;
+            if (field == "firstName")
+                result = a.getFirstName() < b.getFirstName();
+            else if (field == "lastName")
+                result = a.getLastName() < b.getLastName();
+            else if (field == "middleName") 
+                result = a.getMiddleName() < b.getMiddleName();
+            else if (field == "address")
+                result = a.getAddress() < b.getAddress();
+            else if (field == "birthDate")
+                result = a.getBirthDate() < b.getBirthDate();
+            else if (field == "email")
+                result = a.getEmail() < b.getEmail();
+
+            if (order == Qt::DescendingOrder)
+                result = !result;
+            if (result == true)
+                return true;
+            else if (result == false)
+            {
+                if ((field == "firstName" && a.getFirstName() != b.getFirstName()) ||
+                    (field == "lastName" && a.getLastName() != b.getLastName()) ||
+                    (field == "middleName" && a.getMiddleName() != b.getMiddleName()) ||
+                    (field == "address" && a.getAddress() != b.getAddress()) ||
+                    (field == "birthDate" && a.getBirthDate() != b.getBirthDate()) ||
+                    (field == "email" && a.getEmail() != b.getEmail())
+                    ) {
+                    return false;
+                }
+            }
         }
-        else if (field == "lastName") {
-            result = a.getLastName() < b.getLastName();
-        }
-        else if (field == "middleName") {
-            result = a.getMiddleName() < b.getMiddleName();
-        }
-        else if (field == "address") {
-            result = a.getAddress() < b.getAddress();
-        }
-        else if (field == "birthDate")
-        {
-            result = a.getBirthDate() < b.getBirthDate();
-        }
-        else if (field == "email")
-        {
-            result = a.getEmail() < b.getEmail();
-        }
-        if (order == Qt::DescendingOrder)
-        {
-            result = !result;
-        }
-        return result;
+        return false; // если все поля одинаковы
+
         });
     return contacts;
 }

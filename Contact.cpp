@@ -66,6 +66,9 @@ QList<QString> Contact::getPhoneNumbers() const {
 }
 
 //Setters
+void Contact::setId(const int& id) {
+    this->id = id;
+}
 void Contact::setFirstName(const QString& firstName) {
     if (validateName(firstName)) {
         this->firstName = firstName.trimmed();
@@ -141,7 +144,7 @@ bool Contact::isValid() const {
 }
 bool Contact::validateName(const QString& name) const {
     if (!name.isEmpty()) {
-        QRegularExpression regex(QString(R"(^[A-Za-zР-пр-џ\s]+$)"));
+        QRegularExpression regex(QString(R"(^[A-Za-zР-пр-џ][A-Za-zР-пр-џ0-9\s-]*[A-Za-zР-пр-џ0-9]$)"));
         return regex.match(name).hasMatch();
     }
     else return true;
